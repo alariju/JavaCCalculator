@@ -1,0 +1,50 @@
+*****************************************************
+*             TECNOLÓGICO DE COSTA RICA             *
+*                                                   *
+*     Autor: Albin Arias Juárez - 201242258         *
+*                                                   *
+* Ingeniería en Computación                         *
+*   Desarrollo de Aplicaciones para Dispositivos    *
+*                                          Móviles  *
+*                                                   *
+* Profs:                                            *
+*   Andrei Fuentes                                  *
+*   Jeff Schmidth                                   *
+*                                                   *
+*             Cartago. Costa Rica 2014              *
+
+En Windows, se debe compilar primero los dos .java del repositorio, con la instrucción "javac". Se debe escribir
+primero el archivo Calculator.java, y luego MCalculator.java, esto porque MCalculator crea instancias de la
+clase Calculator, por lo tanto, esta ultima debe ser compilada primero.
+
+                >javac "C:\...\Calculator.java" "C:\...\MCalculator.java"
+                
+Ejecutando lo anterior, logramos los archivos .class del programa. Lo siguiente es generar el archivo .h,
+necesario para programar las funciones de la calculadora en C. Esto se logra ejecutando el comando "javah",
+usando la clase Calculator.
+
+                >javah -d "C:\..." -classpath "C:\..." Calculator
+                
+        ***NOTA: La dirección: C:\... es aquella en la que se encuentra el archivo .class de Calculator.java,
+        allí es donde se generará el archivo .h.
+
+Una vez logrado lo anterior, se debe de programar el archivo Calculator.c, que es sumamente facil,
+basta con definir las funciones declaradas en el Calculator.h
+
+Luego, se deben compilar los archivos .c y .h, de la siguiente manera:
+                
+                >set JAVA_HOME=C:\Program Files\Java\jdk1.8.0
+                >gcc -c -I"%JAVA_HOME%\include" -I"%JAVA_HOME%\include\win32" Calculator.c
+                
+          ***Lo anterior, genera el archivo .o, listo para hacer el "link", además de generar el
+          archivo .dll
+          
+                >gcc -Wl,--add-stdcall-alias -shared -o operations.dll Calculator.o
+                
+Finalmente, se debe ejecutar la aplicación, utilizando el comando "java", de la siguiente manera:
+
+                >java MCalculator
+                
+Esto levantará la VM de Java, y ejecutará nuestra calculadora.
+
+FIN.
